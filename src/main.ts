@@ -12,9 +12,6 @@ let currencyPerClick = 1;
 let currencyPerSec = 0;
 let currency = 0;
 
-
-
-
 //let astronautsOwned = 0;
 
 const app = document.querySelector<HTMLElement>("#app")!;
@@ -27,8 +24,6 @@ shipButton.src = tileUrl;
 shipButton.alt = "Rocket"; // Cash Display
 shipButton.width = 96;
 shipButton.height = 256;
-
-
 
 shipButton.alt = "Fuel Button";
 shipButton.width = 96;
@@ -43,7 +38,7 @@ currencyText.textContent = `Space Data Analyzed: ${currency}`;
 // Planets
 
 const planetTextHeader = document.createElement("h2");
-planetTextHeader.textContent = "[PLANETARY RESEARCH]"
+planetTextHeader.textContent = "[PLANETARY RESEARCH]";
 
 const earthButton = document.createElement("img");
 earthButton.src = earthPlanet;
@@ -80,7 +75,6 @@ redButton.width = 32;
 redButton.height = 32;
 redButton.style.visibility = "hidden";
 
-
 // Main Clicker
 shipButton.addEventListener("click", () => {
   currency += currencyPerClick;
@@ -108,59 +102,64 @@ redButton.addEventListener("click", () => {
   currencyPerClick += 50;
 });
 
+let previoustime = 0;
 
- let previoustime = 0;
-
- function timeElapse(time: number){
+function timeElapse(time: number) {
   if (previoustime === 0) previoustime = time;
 
-  const seconds = (time - previoustime)/ 1000;
+  const seconds = (time - previoustime) / 1000;
   previoustime = time;
 
   currency += currencyPerSec * seconds;
-  currencyText.textContent = `Space Data Analyzed: ${Math.floor (currency)}`;
+  currencyText.textContent = `Space Data Analyzed: ${Math.floor(currency)}`;
   requestAnimationFrame(timeElapse);
- }
+}
 
- requestAnimationFrame(timeElapse);
+requestAnimationFrame(timeElapse);
 
- // old function
+// old function
 
 const upgradeCostIncrease = 1.15;
 
 const upgrades = [
-  {name: "Fuel", cost: 15, count: 0, passive: 1},
-  {name: "Astronaut", cost: 100, count: 0, passive: 5},
+  { name: "Fuel", cost: 15, count: 0, passive: 1 },
+  { name: "Astronaut", cost: 100, count: 0, passive: 5 },
   { name: "Satellite", cost: 500, count: 0, passive: 20 },
-]
+];
 
-function buyUpgrade(upgrade:typeof upgrades[number]){
-    if (currency >= upgrade.cost) {
-        currency -= upgrade.cost;
-        upgrade.count ++;
-        currencyPerSec += upgrade.passive;
-        upgrade.cost = Math.ceil(upgrade.cost * upgradeCostIncrease);
+function buyUpgrade(upgrade: typeof upgrades[number]) {
+  if (currency >= upgrade.cost) {
+    currency -= upgrade.cost;
+    upgrade.count++;
+    currencyPerSec += upgrade.passive;
+    upgrade.cost = Math.ceil(upgrade.cost * upgradeCostIncrease);
   }
 }
 
 //create button based on upgrade stuff
 
-for (const upgrade of upgrades){
-
+for (const upgrade of upgrades) {
   const button = document.createElement("button");
   button.textContent = `Buy ${upgrade.name} (${upgrade.cost}) Space Data`;
 
-  button.addEventListener ("click", () => {
-    buyUpgrade (upgrade)
+  button.addEventListener("click", () => {
+    buyUpgrade(upgrade);
 
-    button.textContent = `Buy ${upgrade.name} (${upgrade.cost}) Space Data, count: ${upgrade.count}`;
-    });
+    button.textContent =
+      `Buy ${upgrade.name} (${upgrade.cost}) Space Data, count: ${upgrade.count}`;
+  });
   app.append(button);
 }
 
-
-
-
-app.append(heading, shipButton, currencyText, dataText, 
- planetTextHeader, earthButton, tanButton, 
-  brownButton, greyButton, redButton);
+app.append(
+  heading,
+  shipButton,
+  currencyText,
+  dataText,
+  planetTextHeader,
+  earthButton,
+  tanButton,
+  brownButton,
+  greyButton,
+  redButton,
+);
