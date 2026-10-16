@@ -78,29 +78,69 @@ redButton.style.visibility = "hidden";
 // Main Clicker
 shipButton.addEventListener("click", () => {
   currency += currencyPerClick;
+  checkPlanet();
+  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
   currencyText.textContent = `Space Data Analyzed: ${currency}`;
 });
 
 // Clicker Upgrades
 earthButton.addEventListener("click", () => {
+  checkPlanet();
   currencyPerClick += 5;
+  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
 });
 
 tanButton.addEventListener("click", () => {
+  checkPlanet();
   currencyPerClick += 10;
+  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
 });
 
 brownButton.addEventListener("click", () => {
+  checkPlanet();
   currencyPerClick += 20;
+  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
 });
 
 greyButton.addEventListener("click", () => {
+  checkPlanet();
   currencyPerClick += 30;
+  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
 });
 
 redButton.addEventListener("click", () => {
+  checkPlanet();
   currencyPerClick += 50;
+  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
 });
+
+function checkPlanet(){
+  if (currency >= 50){
+    earthButton.style.visibility = "visible";
+  } else {
+    earthButton.style.visibility = "hidden";
+  }
+  if (currency >= 100){
+    tanButton.style.visibility = "visible";
+  } else {
+    tanButton.style.visibility = "hidden";
+  }
+  if (currency >= 250){
+    brownButton.style.visibility = "visible";
+  } else {
+    brownButton.style.visibility = "hidden";
+  }
+  if (currency >= 500){
+    greyButton.style.visibility = "visible";
+  } else {
+    greyButton.style.visibility = "hidden";
+  }
+  if (currency >= 750){
+    redButton.style.visibility = "visible";
+  } else {
+    redButton.style.visibility = "hidden";
+  }
+}
 
 let previoustime = 0;
 
