@@ -114,28 +114,28 @@ redButton.addEventListener("click", () => {
   dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
 });
 
-function checkPlanet(){
-  if (currency >= 50){
+function checkPlanet() {
+  if (currency >= 50) {
     earthButton.style.visibility = "visible";
   } else {
     earthButton.style.visibility = "hidden";
   }
-  if (currency >= 100){
+  if (currency >= 100) {
     tanButton.style.visibility = "visible";
   } else {
     tanButton.style.visibility = "hidden";
   }
-  if (currency >= 250){
+  if (currency >= 250) {
     brownButton.style.visibility = "visible";
   } else {
     brownButton.style.visibility = "hidden";
   }
-  if (currency >= 500){
+  if (currency >= 500) {
     greyButton.style.visibility = "visible";
   } else {
     greyButton.style.visibility = "hidden";
   }
-  if (currency >= 750){
+  if (currency >= 750) {
     redButton.style.visibility = "visible";
   } else {
     redButton.style.visibility = "hidden";
