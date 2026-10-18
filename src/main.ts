@@ -8,7 +8,6 @@ let currencyPerClick = 1;
 let currencyPerSec = 0;
 let currency = 0;
 
-
 const app = document.querySelector<HTMLElement>("#app")!;
 
 const heading = document.createElement("h1");
@@ -61,9 +60,7 @@ shipButton.addEventListener("click", () => {
 
   updateButtons();
   updateCurrencyText();
-
 });
-
 
 let previoustime = 0;
 
