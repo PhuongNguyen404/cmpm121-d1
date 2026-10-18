@@ -2,17 +2,12 @@
 // even this tiny example demonstrates a separately deployed asset.
 // @deno-types="./asset-url.d.ts"
 import tileUrl from "./assets/rocketImage.svg?no-inline";
-import earthPlanet from "./assets/earthPlanet.svg?no-inline";
-import greyPlanet from "./assets/greyPlanet.svg?no-inline";
-import redPlanet from "./assets/redPlanet.svg?no-inline";
-import tanPlanet from "./assets/tanPlanet.svg?no-inline";
-import brownPlanet from "./assets/brownPlanet.svg?no-inline";
+import "./style.css";
 
 let currencyPerClick = 1;
 let currencyPerSec = 0;
 let currency = 0;
 
-//let astronautsOwned = 0;
 
 const app = document.querySelector<HTMLElement>("#app")!;
 
@@ -25,122 +20,50 @@ shipButton.alt = "Rocket"; // Cash Display
 shipButton.width = 96;
 shipButton.height = 256;
 
-shipButton.alt = "Fuel Button";
-shipButton.width = 96;
-shipButton.height = 96;
-
 const dataText = document.createElement("p");
 dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
 
 const currencyText = document.createElement("p");
 currencyText.textContent = `Space Data Analyzed: ${currency}`;
 
+const currencyPerSecText = document.createElement("p");
+currencyPerSecText.textContent = `Data Per Second: ${currencyPerSec}`;
+
+//Format
+
+const topSection = document.createElement("div");
+topSection.id = "top";
+
+const mainSection = document.createElement("div");
+mainSection.id = "main";
+
+const upgradeSection = document.createElement("div");
+upgradeSection.id = "upgrades";
+
+const planetSection = document.createElement("div");
+planetSection.id = "planets";
+
+function updateCurrencyText() {
+  currencyText.textContent = `Space Data Analyzed: ${Math.floor(currency)}`;
+}
+
 // Planets
 
 const planetTextHeader = document.createElement("h2");
 planetTextHeader.textContent = "[PLANETARY RESEARCH]";
 
-const earthButton = document.createElement("img");
-earthButton.src = earthPlanet;
-earthButton.alt = "earth";
-earthButton.width = 64;
-earthButton.height = 64;
-earthButton.style.visibility = "hidden";
-
-const tanButton = document.createElement("img");
-tanButton.src = tanPlanet;
-tanButton.alt = "tanPlanet";
-tanButton.width = 64;
-tanButton.height = 64;
-tanButton.style.visibility = "hidden";
-
-const brownButton = document.createElement("img");
-brownButton.src = brownPlanet;
-brownButton.alt = "brownPlanet";
-brownButton.width = 64;
-brownButton.height = 64;
-brownButton.style.visibility = "hidden";
-
-const greyButton = document.createElement("img");
-greyButton.src = greyPlanet;
-greyButton.alt = "greyPlanet";
-greyButton.width = 32;
-greyButton.height = 32;
-greyButton.style.visibility = "hidden";
-
-const redButton = document.createElement("img");
-redButton.src = redPlanet;
-redButton.alt = "redPlanet";
-redButton.width = 32;
-redButton.height = 32;
-redButton.style.visibility = "hidden";
+const upgradeTextHeader = document.createElement("h2");
+upgradeTextHeader.textContent = "[SPACE UPGRADES]";
 
 // Main Clicker
 shipButton.addEventListener("click", () => {
   currency += currencyPerClick;
-  checkPlanet();
-  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
-  currencyText.textContent = `Space Data Analyzed: ${currency}`;
+
+  updateButtons();
+  updateCurrencyText();
+
 });
 
-// Clicker Upgrades
-earthButton.addEventListener("click", () => {
-  checkPlanet();
-  currencyPerClick += 5;
-  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
-});
-
-tanButton.addEventListener("click", () => {
-  checkPlanet();
-  currencyPerClick += 10;
-  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
-});
-
-brownButton.addEventListener("click", () => {
-  checkPlanet();
-  currencyPerClick += 20;
-  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
-});
-
-greyButton.addEventListener("click", () => {
-  checkPlanet();
-  currencyPerClick += 30;
-  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
-});
-
-redButton.addEventListener("click", () => {
-  checkPlanet();
-  currencyPerClick += 50;
-  dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
-});
-
-function checkPlanet() {
-  if (currency >= 50) {
-    earthButton.style.visibility = "visible";
-  } else {
-    earthButton.style.visibility = "hidden";
-  }
-  if (currency >= 100) {
-    tanButton.style.visibility = "visible";
-  } else {
-    tanButton.style.visibility = "hidden";
-  }
-  if (currency >= 250) {
-    brownButton.style.visibility = "visible";
-  } else {
-    brownButton.style.visibility = "hidden";
-  }
-  if (currency >= 500) {
-    greyButton.style.visibility = "visible";
-  } else {
-    greyButton.style.visibility = "hidden";
-  }
-  if (currency >= 750) {
-    redButton.style.visibility = "visible";
-  } else {
-    redButton.style.visibility = "hidden";
-  }
-}
 
 let previoustime = 0;
 
@@ -151,13 +74,13 @@ function timeElapse(time: number) {
   previoustime = time;
 
   currency += currencyPerSec * seconds;
-  currencyText.textContent = `Space Data Analyzed: ${Math.floor(currency)}`;
+  updateCurrencyText();
+  updateButtons();
+
   requestAnimationFrame(timeElapse);
 }
 
 requestAnimationFrame(timeElapse);
-
-// old function
 
 const upgradeCostIncrease = 1.15;
 
@@ -165,6 +88,15 @@ const upgrades = [
   { name: "Fuel", cost: 15, count: 0, passive: 1 },
   { name: "Astronaut", cost: 100, count: 0, passive: 5 },
   { name: "Satellite", cost: 500, count: 0, passive: 20 },
+  { name: "Research Center", cost: 2000, count: 0, passive: 80 },
+  { name: "Space Station", cost: 10000, count: 0, passive: 200 },
+  { name: "Moon Base", cost: 50000, count: 0, passive: 1000 },
+  { name: "Rocket Factory", cost: 250000, count: 0, passive: 5000 },
+  { name: "Nasa", cost: 1000000, count: 0, passive: 20000 },
+  { name: "Mar Colony", cost: 5000000, count: 0, passive: 100000 },
+  { name: "Dyson Sphere", cost: 25000000, count: 0, passive: 500000 },
+  { name: "Wormhole Generator", cost: 100000000, count: 0, passive: 2000000 },
+  { name: "Galactic Empire", cost: 1000000000, count: 0, passive: 15000000 },
 ];
 
 function buyUpgrade(upgrade: typeof upgrades[number]) {
@@ -172,14 +104,60 @@ function buyUpgrade(upgrade: typeof upgrades[number]) {
     currency -= upgrade.cost;
     upgrade.count++;
     currencyPerSec += upgrade.passive;
+    currencyPerSecText.textContent = `Data Per Second: ${currencyPerSec}`;
     upgrade.cost = Math.ceil(upgrade.cost * upgradeCostIncrease);
+
+    updateCurrencyText();
+    updateButtons();
   }
 }
 
+const planets = [
+  { name: "Our Planet", cost: 250, count: 0, passive: 5 },
+  { name: "Desert Planet", cost: 450, count: 0, passive: 10 },
+  { name: "Rock Planet", cost: 850, count: 0, passive: 20 },
+  { name: "Dark Planet", cost: 1250, count: 0, passive: 30 },
+  { name: "Red Planet", cost: 2050, count: 0, passive: 50 },
+];
+
+function buyPlanets(planets: typeof upgrades[number]) {
+  if (currency >= planets.cost) {
+    currency -= planets.cost;
+    planets.count++;
+    currencyPerClick += planets.passive;
+    planets.cost = Math.ceil(planets.cost * upgradeCostIncrease);
+    updateCurrencyText();
+    updateButtons();
+    dataText.textContent = `Current Active Data Research: ${currencyPerClick}`;
+  }
+}
+
+// each section divide
+topSection.append(heading, currencyText, dataText, currencyPerSecText);
+mainSection.append(shipButton, upgradeSection);
+planetSection.append(planetTextHeader);
+upgradeSection.append(upgradeTextHeader);
+
 //create button based on upgrade stuff
+for (const upgrade of planets) {
+  const planetButton = document.createElement("button");
+  planetButton.disabled = currency < upgrade.cost;
+
+  planetButton.textContent = `Buy ${upgrade.name} (${upgrade.cost}) Space Data`;
+
+  planetButton.addEventListener("click", () => {
+    buyPlanets(upgrade);
+
+    planetButton.textContent =
+      `Buy ${upgrade.name} (${upgrade.cost}) Space Data, count: ${upgrade.count}`;
+  });
+
+  planetSection.append(planetButton);
+}
 
 for (const upgrade of upgrades) {
   const button = document.createElement("button");
+  button.disabled = currency < upgrade.cost;
   button.textContent = `Buy ${upgrade.name} (${upgrade.cost}) Space Data`;
 
   button.addEventListener("click", () => {
@@ -188,18 +166,17 @@ for (const upgrade of upgrades) {
     button.textContent =
       `Buy ${upgrade.name} (${upgrade.cost}) Space Data, count: ${upgrade.count}`;
   });
-  app.append(button);
+  upgradeSection.append(button);
 }
 
-app.append(
-  heading,
-  shipButton,
-  currencyText,
-  dataText,
-  planetTextHeader,
-  earthButton,
-  tanButton,
-  brownButton,
-  greyButton,
-  redButton,
-);
+function updateButtons() {
+  planetSection.querySelectorAll("button").forEach((button, i) => {
+    button.disabled = currency < planets[i].cost;
+  });
+
+  upgradeSection.querySelectorAll("button").forEach((button, i) => {
+    button.disabled = currency < upgrades[i].cost;
+  });
+}
+
+app.append(topSection, mainSection, planetSection);
